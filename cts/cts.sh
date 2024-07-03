@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Function to display usage information
 usage() {
     cat <<EOF
 This script creates .tsx and .module.scss files in the current directory or in a specified directory.
@@ -12,14 +11,12 @@ EOF
     exit 1
 }
 
-# Function to create a directory if specified
 create_directory() {
   if [ "$directory_name" != "$(basename "$PWD")" ]; then
     mkdir -p "$target_dir"
   fi
 }
 
-# Function to check if a file already exists
 check_file_exists() {
   if [ -f "$1" ]; then
     echo "Error: The file $1 already exists."
@@ -27,16 +24,15 @@ check_file_exists() {
   fi
 }
 
-# Function to create a file from a template
 create_file_from_template() {
   local template_file=$1
   local output_file=$2
   local content=$(<"$template_file")
   local processed_content="${content//\{\{directory_name\}\}/$directory_name}"
+  processed_content="${processed_content//\{\{directory_name_lower\}\}/$directory_name_lower}"
   echo "$processed_content" > "$output_file"
 }
 
-# Function to validate if a file was created successfully
 validate_file_creation() {
   if [ ! -f "$1" ]; then
     echo "Error: Failed to create $1."
@@ -44,7 +40,17 @@ validate_file_creation() {
   fi
 }
 
-# Parse command line options
+check_directory_name() {
+  if ! [[ "$directory_name" =~ ^[A-Z] ]]; then
+    echo "Error: The directory name '$directory_name' must start with an uppercase letter."
+    exit 1
+  fi
+}
+
+convert_first_letter_to_lower() {
+  directory_name_lower="$(echo "$directory_name" | sed 's/^\(.\)/\L\1/')"
+}
+
 parse_options() {
   directory_name=$(basename "$PWD")
   target_dir="$PWD"
@@ -69,9 +75,11 @@ parse_options() {
     esac
     shift
   done
+  
+  check_directory_name
+  convert_first_letter_to_lower
 }
 
-# Main function to orchestrate file creation
 main() {
   parse_options "$@"
   create_directory

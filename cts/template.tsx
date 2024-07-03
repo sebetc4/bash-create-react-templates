@@ -8,7 +8,7 @@ interface {{directory_name}}Props {}
 
 export const {{directory_name}}: FC<{{directory_name}}Props> = () => {
   return (
-    <div className={styles.container}>
+    <div className={styles.{{directory_name_lower}}}>
       {{directory_name}}
     </div>
   );
