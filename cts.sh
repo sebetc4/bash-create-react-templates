@@ -90,10 +90,10 @@ main() {
   check_file_exists "$tsx_filepath"
   check_file_exists "$scss_filepath"
 
-  create_file_from_template "$(dirname "$0")/template.tsx" "$tsx_filepath"
+  create_file_from_template "$(dirname "$0")/templates/template.tsx" "$tsx_filepath"
   validate_file_creation "$tsx_filepath"
 
-  create_file_from_template "$(dirname "$0")/template.module.scss" "$scss_filepath"
+  create_file_from_template "$(dirname "$0")/templates/template.module.scss" "$scss_filepath"
   validate_file_creation "$scss_filepath"
 
   echo "Success: The files $tsx_filepath and $scss_filepath have been created successfully."
