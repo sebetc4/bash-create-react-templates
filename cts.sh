@@ -3,9 +3,10 @@
 usage() {
     cat <<EOF
 This script creates .tsx and .module.scss files in the current directory or in a specified directory.
-Usage: $0 [-d <directory>]
+Usage: $0 [-d <directory>] [-v]
 Options:
     -d, --directory <directory>  Specify the directory in which to create the files. If not specified, files will be created in the current directory.
+    -v, --verbose                Display detailed messages.
     -h, --help                   Display this help message.
 EOF
     exit 1
@@ -54,6 +55,7 @@ convert_first_letter_to_lower() {
 parse_options() {
   directory_name=$(basename "$PWD")
   target_dir="$PWD"
+  verbose_mode=false
 
   while [[ "$#" -gt 0 ]]; do
     case $1 in
@@ -64,6 +66,9 @@ parse_options() {
         directory_name="$2"
         target_dir="$PWD/$directory_name"
         shift
+        ;;
+      -v|--verbose)
+        verbose_mode=true
         ;;
       -h|--help)
         usage
@@ -96,7 +101,7 @@ main() {
   create_file_from_template "$(dirname "$0")/templates/template.module.scss" "$scss_filepath"
   validate_file_creation "$scss_filepath"
 
-  echo "Success: The files $tsx_filepath and $scss_filepath have been created successfully."
+  [ "$verbose_mode" = true ] && echo "Success: The files $tsx_filepath and $scss_filepath have been created successfully."
 }
 
 main "$@"
