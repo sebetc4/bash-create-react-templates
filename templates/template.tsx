@@ -4,7 +4,9 @@ import styles from './{{directory_name}}.module.scss'
 import { type FC } from 'react'
 // App
 
-type {{directory_name}}Props = {}
+type {{directory_name}}Props = {
+  // Props
+}
 
 export const {{directory_name}}: FC<{{directory_name}}Props> = () => {
   return (
